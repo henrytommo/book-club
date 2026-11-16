@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import pandas as pd
 
 import requests
@@ -5,6 +8,7 @@ import requests
 URL = "https://openlibrary.org/"
 LIMIT = 3
 BOOKS_CSV = "data/books.csv"
+OUTPUT_JSON = "data/descriptions/descriptions.json"
 FIELDS = {
     "description": "description",
     "subjects": "subjects",
@@ -47,4 +51,8 @@ def book_info(csv_path=BOOKS_CSV):
     titles = [row["title"] for idx, row in books.iterrows()]
     return {title: get_data(title) for title in titles}
 
-print(book_info())
+
+if __name__ == "__main__":
+    output = Path(OUTPUT_JSON)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(book_info(), indent=2))
