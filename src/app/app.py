@@ -1,12 +1,13 @@
-import sys
+import json
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from data.data import data
 from app_helper import genre_counts, most_common
+
+DESCRIPTIONS_JSON = Path(__file__).resolve().parents[2] / "data" / "descriptions" / "descriptions.json"
+data = json.loads(DESCRIPTIONS_JSON.read_text())
 
 st.title("Book Club Stats")
 st.metric("Books read", len(data))
